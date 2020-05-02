@@ -1,0 +1,22 @@
+version: "3.7"
+services:
+    db:
+        image: mongo
+        container_name: mongo-parse-server-rg
+        environment: 
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: senhaRoot
+        volumes: 
+            - ./db/data:/data/db
+        restart: always
+    api: 
+        build:
+            "./api"
+        container_name: node-parse-server-rg
+        restart: always
+        volumes: 
+            - ./api:/home/node/app
+        ports: 
+            - "443:3000"
+        depends_on: 
+            - db
