@@ -28,7 +28,7 @@ const parseServer = new ParseServer({
   databaseURI: 'mongodb://root:senhaRoot@mongo-parse-server-rg:27017/?authSource=admin', 
   appId: process.env.APPID,
   masterKey: process.env.MASTERKEY,
-  serverURL: 'http://localhost:${process.env.PORT}/parse',
+  serverURL: `http://localhost:${process.env.PORT}/parse`,
   publicServerURL: 'https://api.rafaelgabriel.dev/parse'
 });
 
@@ -42,7 +42,11 @@ const parseGraphQLServer = new ParseGraphQLServer(
 
 app.use('/parse', parseServer.app); // (Optional) Mounts the REST API
 parseGraphQLServer.applyGraphQL(app); // Mounts the GraphQL API
-parseGraphQLServer.applyPlayground(app); // (Optional) Mounts the GraphQL Playground - do NOT use in Production
+
+console.log("debug value:", process.env.DEBUG);
+if (process.env.DEBUG == 1) {
+  parseGraphQLServer.applyPlayground(app); // (Optional) Mounts the GraphQL Playground - do NOT use in Production 
+}
  
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
